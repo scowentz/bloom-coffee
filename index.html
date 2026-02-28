@@ -1,24 +1,103 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bloom Coffee Roasters</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #4a2c2a;
+            color: #fff;
+            padding: 10px 20px;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+        }
+        .hero {
+            background-image: url('hero-image.jpg');
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+        section {
+            padding: 20px;
+        }
+        /* Additional styles for sections */
+        footer {
+            background-color: #4a2c2a;
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to Bloom Coffee Roasters</h1>
+        <nav>
+            <h1>Bloom Coffee Roasters</h1>
+            <div>
+                <a href="#about">About</a>
+                <a href="#coffees">Coffees</a>
+                <a href="#process">Process</a>
+                <a href="#newsletter">Newsletter</a>
+            </div>
+        </nav>
     </header>
-    <main>
-        <section>
-            <h2>About Our Coffee</h2>
-            <p>At Bloom Coffee Roasters, we believe in serving only the best quality coffee.</p>
-        </section>
-        <section>
-            <h2>Our Story</h2>
-            <p>Founded in 2021, Bloom Coffee Roasters has quickly become a beloved destination for coffee enthusiasts.</p>
-        </section>
-    </main>
+    
+    <div class="hero">
+        <h2>Welcome to Bloom Coffee Roasters</h2>
+    </div>
+    
+    <section id="about">
+        <h2>About Us</h2>
+        <p>At Bloom Coffee Roasters, we pride ourselves on sourcing the finest beans...</p>
+    </section>
+    
+    <section id="coffees">
+        <h2>Our Coffees</h2>
+        <p>Explore our unique selection of coffees sourced from around the world...</p>
+    </section>
+    
+    <section id="process">
+        <h2>Our Process</h2>
+        <p>Discover the journey of our coffee from farm to cup...</p>
+    </section>
+    
+    <section id="newsletter">
+        <h2>Subscribe to Our Newsletter</h2>
+        <form>
+            <input type="email" placeholder="Enter your email..." required>
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+    
     <footer>
-        <p>Contact us: info@bloomcoffeeroasters.com</p>
+        <p>&copy; 2026 Bloom Coffee Roasters. All rights reserved.</p>
     </footer>
+    
+    <script>
+        // JavaScript code can be added here
+        console.log("Welcome to Bloom Coffee Roasters!");
+    </script>
 </body>
 </html>
