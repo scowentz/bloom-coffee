@@ -40,6 +40,7 @@ li { list-style: none; }
   --font-serif:     'Cormorant Garamond', serif;
   --font-sans:      'Jost', sans-serif;
 
+  --announce-h:     36px;
   --nav-h:          72px;
   --max-w:          1280px;
   --transition:     0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -86,8 +87,27 @@ li { list-style: none; }
 /* ============================================================
    NAVIGATION
 ============================================================ */
+/* ============================================================
+   ANNOUNCEMENT BAR
+============================================================ */
+.announce-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 101;
+  height: var(--announce-h);
+  background: var(--roast);
+  border-bottom: 1px solid rgba(201,164,100,.15);
+  display: flex; align-items: center; justify-content: center;
+}
+.announce-bar__text {
+  font-family: var(--font-sans); font-size: 0.65rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(247,238,217,.7);
+}
+.announce-bar__text strong {
+  color: var(--gold); font-weight: 500;
+}
+
 .nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  position: fixed; top: var(--announce-h); left: 0; right: 0; z-index: 100;
   height: var(--nav-h);
   display: flex; align-items: center;
   transition: background var(--transition), backdrop-filter var(--transition),
@@ -734,7 +754,7 @@ li { list-style: none; }
 ============================================================ */
 .cart-page {
   min-height: 100vh;
-  padding: calc(var(--nav-h) + 4rem) 0 4rem;
+  padding: calc(var(--announce-h) + var(--nav-h) + 4rem) 0 4rem;
   background: linear-gradient(160deg, var(--roast) 0%, var(--dark-roast) 55%, var(--espresso) 100%);
 }
 .cart-page__title {

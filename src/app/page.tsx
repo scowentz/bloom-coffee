@@ -1,3 +1,4 @@
+import AnnouncementBar from "@/components/AnnouncementBar";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import MarqueeStrip from "@/components/MarqueeStrip";
@@ -10,6 +11,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 export default function Home() {
   return (
     <>
+      <AnnouncementBar />
       <Nav />
       <Hero />
       <MarqueeStrip />
