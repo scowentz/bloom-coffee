@@ -22,21 +22,21 @@ export default function Nav() {
       <nav className={`nav${scrolled ? " scrolled" : ""}`} id="nav">
         <div className="container">
           <div className="nav__inner">
-            <Link
-              href="/"
-              className="nav__logo"
-              aria-label="Bloom Coffee Roasters — Home"
-            >
-              <Image
-                src="/LogoTrans2.png"
-                alt="Bloom Coffee Roasters"
-                width={62}
-                height={62}
-                style={{ height: 62, width: "auto", mixBlendMode: "screen" }}
-                priority
-              />
-            </Link>
           <ul className="nav__links">
+              <Link
+                href="/"
+                className="nav__logo"
+                aria-label="Bloom Coffee Roasters — Home"
+              >
+                <Image
+                  src="/LogoTrans2.png"
+                  alt="Bloom Coffee Roasters"
+                  width={62}
+                  height={62}
+                  style={{ height: 62, width: "auto", mixBlendMode: "screen" }}
+                  priority
+                />
+              </Link>
               <li>
                 <a href="/#about">Our Story</a>
               </li>
