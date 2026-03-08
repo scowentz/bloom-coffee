@@ -58,6 +58,9 @@ export default function Footer() {
               <li>
                 <a href="/#process">Sourcing</a>
               </li>
+              <li>
+                <a href="/coffee-regions-schematic.html">Coffee Regions</a>
+              </li>
             </ul>
           </div>
 

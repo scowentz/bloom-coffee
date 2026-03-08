@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coffee Regions — Bloom Coffee Roasters</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     DESIGN TOKENS — mirrored from Bloom Coffee globals.css
+  ============================================================ */
+  :root {
+    --espresso:     #130b05;
+    --dark-roast:   #1f1009;
+    --roast:        #3d2010;
+    --coffee:       #6b3a22;
+    --sienna:       #bf5e2a;
+    --amber:        #d4803a;
+    --gold:         #c9a464;
+    --cream:        #f7eed9;
+    --parchment:    #ede3c5;
+    --sage:         #4f6840;
+    --sage-mid:     #7a9162;
+    --sage-light:   #a3b893;
+    --moss:         #2d3d26;
+
+    --font-display: 'DM Serif Display', serif;
+    --font-serif:   'Cormorant Garamond', serif;
+    --font-sans:    'Jost', sans-serif;
+
+    --nav-h:        64px;
+    --max-w:        1200px;
+    --transition:   0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    background: var(--espresso);
+    color: var(--cream);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+  li { list-style: none; }
+
+  /* ============================================================
+     GRAIN OVERLAY
+  ============================================================ */
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  /* ============================================================
+     NAVIGATION
+  ============================================================ */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--nav-h);
+    display: flex; align-items: center;
+    background: rgba(19, 11, 5, 0.92);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(201, 164, 100, 0.1);
+  }
+  .nav__inner {
+    max-width: var(--max-w); margin: 0 auto; padding: 0 2rem;
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    position: relative;
+  }
+  .nav__back {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-family: var(--font-sans); font-size: 0.67rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(247,238,217,.5);
+    transition: color var(--transition);
+  }
+  .nav__back:hover { color: var(--cream); }
+  .nav__back-arrow {
+    width: 24px; height: 1px; background: currentColor; position: relative;
+    transition: width var(--transition);
+  }
+  .nav__back-arrow::before {
+    content: ''; position: absolute; left: 0; top: -3px;
+    width: 6px; height: 6px;
+    border-left: 1px solid currentColor; border-bottom: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+  .nav__back:hover .nav__back-arrow { width: 36px; }
+  .nav__title {
+    font-family: var(--font-display); font-size: 1rem;
+    color: var(--gold); letter-spacing: 0.02em;
+    position: absolute; left: 50%; transform: translateX(-50%);
+  }
+  .nav__label {
+    font-family: var(--font-sans); font-size: 0.6rem;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(247,238,217,.28);
+  }
+
+  /* ============================================================
+     LAYOUT
+  ============================================================ */
+  .page {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: calc(var(--nav-h) + 4rem) 2rem 4rem;
+  }
+
+  /* ============================================================
+     HERO HEADER
+  ============================================================ */
+  .hero-header {
+    text-align: center;
+    margin-bottom: 5rem;
+    position: relative;
+    padding: 4rem 0 3rem;
+    overflow: hidden;
+  }
+  .hero-header::before {
+    content: 'Origins';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: clamp(8rem, 18vw, 18rem);
+    color: rgba(201,164,100,.04);
+    white-space: nowrap; pointer-events: none;
+    letter-spacing: -0.04em; line-height: 1;
+  }
+  .hero-header__eyebrow {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1rem; margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 1s ease 0.1s both;
+  }
+  .hero-header__eyebrow-line { width: 36px; height: 1px; background: var(--gold); }
+  .hero-header__eyebrow-text {
+    font-family: var(--font-sans); font-size: 0.64rem;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+  }
+  .hero-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 1.0; letter-spacing: -0.025em;
+    color: var(--cream); position: relative;
+    opacity: 0; animation: fadeUp 1s ease 0.25s both;
+  }
+  .hero-header h1 em { font-style: italic; color: var(--sienna); }
+  .hero-header__sub {
+    margin-top: 1.25rem;
+    font-family: var(--font-serif); font-style: italic; font-weight: 300;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    color: rgba(247,238,217,.45); position: relative;
+    opacity: 0; animation: fadeUp 1s ease 0.4s both;
+  }
+
+  /* ============================================================
+     MARQUEE STRIP
+  ============================================================ */
+  .marquee-strip {
+    background: var(--gold); padding: 12px 0; overflow: hidden;
+    margin: 0 -2rem 4rem;
+  }
+  .marquee-track {
+    display: flex; white-space: nowrap;
+    animation: marquee 28s linear infinite;
+  }
+  .marquee-item {
+    display: inline-flex; align-items: center; gap: 1.5rem;
+    padding-right: 1.5rem;
+    font-family: var(--font-sans); font-size: 0.64rem;
+    font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--espresso);
+  }
+  .marquee-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--espresso); opacity: .35;
+  }
+
+  /* ============================================================
+     SECTION LABEL
+  ============================================================ */
+  .section-label {
+    display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;
+  }
+  .section-label::before {
+    content: ''; display: block; width: 24px; height: 1px;
+    background: var(--gold); flex-shrink: 0;
+  }
+  .section-label span {
+    font-family: var(--font-sans); font-size: 0.62rem;
+    letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold);
+  }
+
+  /* ============================================================
+     SCROLL REVEAL
+  ============================================================ */
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.85s ease, transform 0.85s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .d1 { transition-delay: 0.05s; } .d2 { transition-delay: 0.12s; }
+  .d3 { transition-delay: 0.19s; } .d4 { transition-delay: 0.26s; }
+  .d5 { transition-delay: 0.33s; } .d6 { transition-delay: 0.40s; }
+
+  /* ============================================================
+     SECTION SPACING
+  ============================================================ */
+  .section-block { margin-bottom: 5rem; }
+
+  /* ============================================================
+     REGION GRID
+  ============================================================ */
+  .regions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .region-card {
+    background: rgba(247,238,217,.03);
+    border: 1px solid rgba(247,238,217,.07);
+    border-radius: 4px; padding: 28px;
+    position: relative; overflow: hidden;
+    cursor: default;
+    transition: background var(--transition), border-color var(--transition),
+                transform var(--transition), box-shadow var(--transition);
+  }
+  .region-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: var(--region-color, var(--gold)); opacity: 0.7;
+  }
+  .region-card:hover {
+    background: rgba(247,238,217,.06);
+    border-color: rgba(201,164,100,.18);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(19,11,5,.5);
+  }
+  .region-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
+  }
+  .region-dot {
+    width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+    background: var(--region-color, var(--gold));
+  }
+  .region-name {
+    font-family: var(--font-display); font-size: 1.45rem;
+    color: var(--cream); line-height: 1.1;
+  }
+  .region-continent {
+    font-family: var(--font-sans); font-size: 0.61rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(247,238,217,.32); margin-bottom: 16px; padding-left: 19px;
+  }
+  .flavor-tags {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px;
+  }
+  .tag {
+    font-family: var(--font-sans); font-size: 0.61rem;
+    padding: 3px 10px; border-radius: 100px;
+    letter-spacing: 0.05em;
+    background: rgba(247,238,217,.05);
+    color: rgba(247,238,217,.5);
+    border: 1px solid rgba(247,238,217,.08);
+  }
+  .attr-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 7px;
+  }
+  .attr-label {
+    font-family: var(--font-sans); font-size: 0.59rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(247,238,217,.35); width: 68px; flex-shrink: 0;
+  }
+  .attr-bar-bg {
+    flex: 1; height: 3px;
+    background: rgba(247,238,217,.07); border-radius: 2px; overflow: hidden;
+  }
+  .attr-bar-fill {
+    height: 100%; border-radius: 2px;
+    background: var(--region-color, var(--gold)); opacity: 0.75;
+    transition: width 0.9s ease;
+  }
+  .attr-val {
+    font-family: var(--font-sans); font-size: 0.59rem;
+    color: rgba(247,238,217,.3); width: 14px; text-align: right;
+  }
+  .roast-note {
+    font-family: var(--font-serif); font-style: italic; font-size: 0.88rem;
+    color: var(--gold); margin-top: 10px; line-height: 1.5;
+  }
+  .apps-row {
+    display: flex; flex-wrap: wrap; gap: 5px;
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid rgba(247,238,217,.06);
+  }
+  .apps-label {
+    font-family: var(--font-sans); font-size: 0.58rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(247,238,217,.2); width: 100%; margin-bottom: 4px;
+  }
+  .app-badge {
+    font-family: var(--font-sans); font-size: 0.59rem;
+    letter-spacing: 0.07em; padding: 3px 9px;
+    border-radius: 100px; border: 1px solid;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .app-badge.best {
+    background: rgba(201,164,100,.12);
+    border-color: rgba(201,164,100,.4);
+    color: var(--gold);
+  }
+  .app-badge.good {
+    background: rgba(247,238,217,.04);
+    border-color: rgba(247,238,217,.1);
+    color: rgba(247,238,217,.42);
+  }
+  .app-badge.avoid {
+    background: rgba(139,46,46,.08);
+    border-color: rgba(139,46,46,.25);
+    color: rgba(200,126,126,.6);
+    text-decoration: line-through; opacity: 0.65;
+  }
+
+  /* ============================================================
+     BLENDING RATIOS
+  ============================================================ */
+  .blend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 1.5rem;
+  }
+  .blend-card {
+    border: 1px solid rgba(247,238,217,.07);
+    border-radius: 4px; padding: 26px;
+    background: rgba(247,238,217,.02);
+    position: relative; overflow: hidden;
+    transition: background var(--transition), border-color var(--transition), transform var(--transition);
+  }
+  .blend-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--blend-accent, var(--gold));
+  }
+  .blend-card:hover {
+    background: rgba(247,238,217,.05);
+    border-color: rgba(201,164,100,.15);
+    transform: translateY(-3px);
+  }
+  .blend-title {
+    font-family: var(--font-display); font-size: 1.15rem;
+    color: var(--cream); margin-bottom: 3px;
+  }
+  .blend-purpose {
+    font-family: var(--font-sans); font-size: 0.59rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(247,238,217,.32); margin-bottom: 16px;
+  }
+  .blend-ratio {
+    display: flex; height: 7px; border-radius: 2px;
+    overflow: hidden; gap: 2px; margin-bottom: 12px;
+  }
+  .blend-ratio-segment {
+    height: 100%; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-sans); font-size: 0.55rem;
+    color: rgba(255,255,255,.7); font-weight: 500; min-width: 22px;
+  }
+  .blend-legend {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+  }
+  .blend-legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--font-sans); font-size: 0.63rem;
+    color: rgba(247,238,217,.42);
+  }
+  .blend-legend-dot {
+    width: 8px; height: 8px; border-radius: 1px; flex-shrink: 0;
+  }
+  .blend-result {
+    font-family: var(--font-serif); font-style: italic; font-size: 0.9rem;
+    color: rgba(247,238,217,.6); line-height: 1.7;
+    border-top: 1px solid rgba(247,238,217,.06); padding-top: 12px;
+  }
+
+  /* ============================================================
+     FLAVOR MAP
+  ============================================================ */
+  .flavor-map-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+  }
+  .flavor-col {
+    background: rgba(247,238,217,.02);
+    border: 1px solid rgba(247,238,217,.06);
+    border-radius: 4px; padding: 20px;
+    transition: background var(--transition), border-color var(--transition);
+  }
+  .flavor-col:hover {
+    background: rgba(247,238,217,.05);
+    border-color: rgba(201,164,100,.12);
+  }
+  .flavor-col-header {
+    font-family: var(--font-sans); font-size: 0.61rem;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 1px solid rgba(247,238,217,.08);
+  }
+  .flavor-item {
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 300;
+    padding: 5px 0; color: rgba(247,238,217,.45);
+    display: flex; align-items: center; gap: 8px; line-height: 1.4;
+  }
+  .flavor-item::before { content: '—'; color: rgba(247,238,217,.15); flex-shrink: 0; }
+  .flavor-region {
+    font-size: 0.59rem; letter-spacing: 0.08em;
+    color: rgba(247,238,217,.22); margin-left: auto;
+  }
+
+  /* ============================================================
+     PRINCIPLES
+  ============================================================ */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+  .principle {
+    background: rgba(247,238,217,.02);
+    border: 1px solid rgba(247,238,217,.06);
+    border-radius: 4px; padding: 26px;
+    transition: background var(--transition), border-color var(--transition), transform var(--transition);
+  }
+  .principle:hover {
+    background: rgba(247,238,217,.05);
+    border-color: rgba(201,164,100,.14);
+    transform: translateY(-3px);
+  }
+  .principle-number {
+    font-family: var(--font-display); font-size: 2.5rem;
+    color: rgba(201,164,100,.2); line-height: 1; margin-bottom: 10px;
+  }
+  .principle-title {
+    font-family: var(--font-sans); font-size: 0.66rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px;
+  }
+  .principle-body {
+    font-family: var(--font-serif); font-size: 0.92rem;
+    color: rgba(247,238,217,.45); line-height: 1.75;
+  }
+
+  /* ============================================================
+     ROAST STAGES
+  ============================================================ */
+  .roast-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem; margin-bottom: 1.5rem;
+  }
+  .roast-stage {
+    background: rgba(247,238,217,.02);
+    border: 1px solid rgba(247,238,217,.06);
+    border-radius: 4px; padding: 22px;
+    border-top: 2px solid var(--stage-color, var(--gold));
+    transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  }
+  .roast-stage:hover {
+    background: rgba(247,238,217,.05);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(19,11,5,.4);
+  }
+  .stage-temp {
+    font-family: var(--font-display); font-size: 1.4rem;
+    color: var(--stage-color, var(--gold)); line-height: 1; margin-bottom: 5px;
+  }
+  .stage-name {
+    font-family: var(--font-sans); font-size: 0.82rem; font-weight: 500;
+    color: var(--cream); letter-spacing: 0.04em; margin-bottom: 2px;
+  }
+  .stage-aka {
+    font-family: var(--font-sans); font-size: 0.59rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(247,238,217,.3); margin-bottom: 8px;
+  }
+  .stage-crack {
+    font-family: var(--font-serif); font-style: italic; font-size: 0.8rem;
+    color: rgba(247,238,217,.25); margin-bottom: 12px; padding-bottom: 12px;
+    border-bottom: 1px solid rgba(247,238,217,.06);
+  }
+  .stage-desc {
+    font-family: var(--font-sans); font-size: 0.74rem; font-weight: 300;
+    color: rgba(247,238,217,.42); line-height: 1.65; margin-bottom: 14px;
+  }
+  .stage-origins { display: flex; flex-wrap: wrap; gap: 5px; }
+  .stage-origin-tag {
+    font-family: var(--font-sans); font-size: 0.59rem;
+    padding: 2px 8px; border-radius: 100px;
+    background: rgba(247,238,217,.06);
+    color: rgba(247,238,217,.38); letter-spacing: 0.05em;
+  }
+
+  .espresso-zone {
+    border: 1px solid rgba(201,164,100,.35);
+    border-radius: 4px;
+    background: rgba(201,164,100,.05);
+    padding: 24px 28px;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px;
+    position: relative; overflow: hidden;
+  }
+  .espresso-zone::before {
+    content: '';
+    position: absolute; right: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--gold); opacity: 0.3;
+  }
+  .espresso-zone-label {
+    font-family: var(--font-sans); font-size: 0.62rem;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); flex-shrink: 0;
+  }
+  .espresso-zone-range {
+    font-family: var(--font-display); font-size: 1.1rem;
+    color: var(--cream); flex-shrink: 0;
+  }
+  .espresso-zone-desc {
+    font-family: var(--font-serif); font-style: italic; font-size: 0.88rem;
+    color: rgba(247,238,217,.45); line-height: 1.75;
+    width: 100%; margin-top: 4px;
+  }
+
+  /* ============================================================
+     PAGE FOOTER
+  ============================================================ */
+  .page-footer {
+    text-align: center;
+    padding: 2.5rem 0 0;
+    border-top: 1px solid rgba(247,238,217,.06);
+  }
+  .page-footer__copy {
+    font-family: var(--font-sans); font-size: 0.64rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(247,238,217,.2); margin-bottom: 1rem;
+  }
+  .page-footer__back {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--font-sans); font-size: 0.64rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(247,238,217,.3);
+    transition: color var(--transition);
+  }
+  .page-footer__back:hover { color: var(--gold); }
+  .page-footer__back-line {
+    width: 20px; height: 1px; background: currentColor;
+    transition: width var(--transition);
+  }
+  .page-footer__back:hover .page-footer__back-line { width: 32px; }
+
+  /* ============================================================
+     KEYFRAMES
+  ============================================================ */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(32px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 900px) {
+    .flavor-map-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .page { padding: calc(var(--nav-h) + 2.5rem) 1.25rem 2.5rem; }
+    .marquee-strip { margin: 0 -1.25rem 3rem; }
+    .hero-header::before { display: none; }
+    .flavor-map-grid { grid-template-columns: 1fr 1fr; }
+    .nav__title { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Grain texture overlay -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Navigation -->
+<nav class="nav" aria-label="Page navigation">
+  <div class="nav__inner">
+    <a href="/" class="nav__back" aria-label="Back to Bloom Coffee">
+      <span class="nav__back-arrow"></span>
+      Bloom Coffee
+    </a>
+    <span class="nav__title" aria-hidden="true">Coffee Origins</span>
+    <span class="nav__label">Roaster's Reference</span>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Hero Header -->
+  <header class="hero-header">
+    <div class="hero-header__eyebrow">
+      <span class="hero-header__eyebrow-line"></span>
+      <span class="hero-header__eyebrow-text">Bloom Coffee Roasters</span>
+      <span class="hero-header__eyebrow-line"></span>
+    </div>
+    <h1>Coffee Origins<br><em>Roaster's Reference</em></h1>
+    <p class="hero-header__sub">Flavor Profiles &middot; Blending Guide &middot; Roast Stages</p>
+  </header>
+
+  <!-- Marquee Strip -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-item">Brazil<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Ethiopia<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Colombia<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Guatemala<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Sumatra<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Kenya<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Single Origin<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Specialty Blends<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Small Batch<span class="marquee-dot"></span></span>
+      <!-- duplicate for seamless loop -->
+      <span class="marquee-item">Brazil<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Ethiopia<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Colombia<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Guatemala<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Sumatra<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Kenya<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Single Origin<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Specialty Blends<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Small Batch<span class="marquee-dot"></span></span>
+    </div>
+  </div>
+
+  <!-- ORIGIN PROFILES -->
+  <section class="section-block">
+    <div class="section-label reveal"><span>Origin Profiles</span></div>
+    <div class="regions-grid">
+
+      <!-- Brazil -->
+      <div class="region-card reveal d1" style="--region-color:#8b5e3c">
+        <div class="region-header">
+          <span class="region-dot"></span>
+          <span class="region-name">Brazil</span>
+        </div>
+        <div class="region-continent">South America &middot; Minas Gerais, Cerrado, Sul de Minas</div>
+        <div class="flavor-tags">
+          <span class="tag">Milk Chocolate</span>
+          <span class="tag">Hazelnut</span>
+          <span class="tag">Brown Sugar</span>
+          <span class="tag">Almond</span>
+        </div>
+        <div class="attr-row"><span class="attr-label">Body</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:80%"></div></div><span class="attr-val">4</span></div>
+        <div class="attr-row"><span class="attr-label">Acidity</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:25%"></div></div><span class="attr-val">1</span></div>
+        <div class="attr-row"><span class="attr-label">Sweetness</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:80%"></div></div><span class="attr-val">4</span></div>
+        <div class="attr-row"><span class="attr-label">Crema</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:95%"></div></div><span class="attr-val">5</span></div>
+        <p class="roast-note">Ideal blend base — forgiving, versatile, crema-rich</p>
+        <div class="apps-row">
+          <div class="apps-label">Best for</div>
+          <span class="app-badge best">Espresso</span>
+          <span class="app-badge best">Cold Brew</span>
+          <span class="app-badge good">Moka Pot</span>
+          <span class="app-badge good">French Press</span>
+          <span class="app-badge avoid">Pour Over</span>
+        </div>
+      </div>
+
+      <!-- Ethiopia -->
+      <div class="region-card reveal d2" style="--region-color:#8b2e2e">
+        <div class="region-header">
+          <span class="region-dot"></span>
+          <span class="region-name">Ethiopia</span>
+        </div>
+        <div class="region-continent">East Africa &middot; Yirgacheffe, Sidama, Guji</div>
+        <div class="flavor-tags">
+          <span class="tag">Blueberry</span>
+          <span class="tag">Jasmine</span>
+          <span class="tag">Bergamot</span>
+          <span class="tag">Stone Fruit</span>
+        </div>
+        <div class="attr-row"><span class="attr-label">Body</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:45%"></div></div><span class="attr-val">2</span></div>
+        <div class="attr-row"><span class="attr-label">Acidity</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:85%"></div></div><span class="attr-val">4</span></div>
+        <div class="attr-row"><span class="attr-label">Sweetness</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:65%"></div></div><span class="attr-val">3</span></div>
+        <div class="attr-row"><span class="attr-label">Crema</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:45%"></div></div><span class="attr-val">2</span></div>
+        <p class="roast-note">Top-note origin — adds complexity; use 15–30%</p>
+        <div class="apps-row">
+          <div class="apps-label">Best for</div>
+          <span class="app-badge best">Pour Over</span>
+          <span class="app-badge best">Aeropress</span>
+          <span class="app-badge good">Siphon</span>
+          <span class="app-badge good">Espresso Blend</span>
+          <span class="app-badge avoid">Cold Brew</span>
+        </div>
+      </div>
+
+      <!-- Colombia -->
+      <div class="region-card reveal d3" style="--region-color:#c9973a">
+        <div class="region-header">
+          <span class="region-dot"></span>
+          <span class="region-name">Colombia</span>
+        </div>
+        <div class="region-continent">South America &middot; Huila, Nari&ntilde;o, Antioquia</div>
+        <div class="flavor-tags">
+          <span class="tag">Caramel</span>
+          <span class="tag">Red Apple</span>
+          <span class="tag">Citrus</span>
+          <span class="tag">Mild Floral</span>
+        </div>
+        <div class="attr-row"><span class="attr-label">Body</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:65%"></div></div><span class="attr-val">3</span></div>
+        <div class="attr-row"><span class="attr-label">Acidity</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:60%"></div></div><span class="attr-val">3</span></div>
+        <div class="attr-row"><span class="attr-label">Sweetness</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:70%"></div></div><span class="attr-val">3</span></div>
+        <div class="attr-row"><span class="attr-label">Crema</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:65%"></div></div><span class="attr-val">3</span></div>
+        <p class="roast-note">Balancer — bridges base and top notes well</p>
+        <div class="apps-row">
+          <div class="apps-label">Best for</div>
+          <span class="app-badge best">Drip / Filter</span>
+          <span class="app-badge best">Aeropress</span>
+          <span class="app-badge good">Espresso</span>
+          <span class="app-badge good">Pour Over</span>
+          <span class="app-badge good">Cold Brew</span>
+        </div>
+      </div>
+
+      <!-- Guatemala -->
+      <div class="region-card reveal d4" style="--region-color:#5a7a4a">
+        <div class="region-header">
+          <span class="region-dot"></span>
+          <span class="region-name">Guatemala</span>
+        </div>
+        <div class="region-continent">Central America &middot; Antigua, Huehuetenango, Atitl&aacute;n</div>
+        <div class="flavor-tags">
+          <span class="tag">Dark Chocolate</span>
+          <span class="tag">Dark Fruit</span>
+          <span class="tag">Spice</span>
+          <span class="tag">Brown Sugar</span>
+        </div>
+        <div class="attr-row"><span class="attr-label">Body</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:80%"></div></div><span class="attr-val">4</span></div>
+        <div class="attr-row"><span class="attr-label">Acidity</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:55%"></div></div><span class="attr-val">3</span></div>
+        <div class="attr-row"><span class="attr-label">Sweetness</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:65%"></div></div><span class="attr-val">3</span></div>
+        <div class="attr-row"><span class="attr-label">Crema</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:70%"></div></div><span class="attr-val">3</span></div>
+        <p class="roast-note">Strong co-base — adds bold depth and complexity</p>
+        <div class="apps-row">
+          <div class="apps-label">Best for</div>
+          <span class="app-badge best">Espresso</span>
+          <span class="app-badge best">Moka Pot</span>
+          <span class="app-badge good">French Press</span>
+          <span class="app-badge good">Cold Brew</span>
+          <span class="app-badge avoid">Light Filter</span>
+        </div>
+      </div>
+
+      <!-- Sumatra -->
+      <div class="region-card reveal d5" style="--region-color:#2e4a6b">
+        <div class="region-header">
+          <span class="region-dot"></span>
+          <span class="region-name">Sumatra</span>
+        </div>
+        <div class="region-continent">Asia-Pacific &middot; Mandheling, Gayo, Lintong</div>
+        <div class="flavor-tags">
+          <span class="tag">Earthy</span>
+          <span class="tag">Cedar</span>
+          <span class="tag">Dark Chocolate</span>
+          <span class="tag">Herbs</span>
+        </div>
+        <div class="attr-row"><span class="attr-label">Body</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:95%"></div></div><span class="attr-val">5</span></div>
+        <div class="attr-row"><span class="attr-label">Acidity</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:20%"></div></div><span class="attr-val">1</span></div>
+        <div class="attr-row"><span class="attr-label">Sweetness</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:40%"></div></div><span class="attr-val">2</span></div>
+        <div class="attr-row"><span class="attr-label">Crema</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:70%"></div></div><span class="attr-val">3</span></div>
+        <p class="roast-note">Heavy-blend anchor — use sparingly (10–25%)</p>
+        <div class="apps-row">
+          <div class="apps-label">Best for</div>
+          <span class="app-badge best">Cold Brew</span>
+          <span class="app-badge best">French Press</span>
+          <span class="app-badge good">Espresso Blend</span>
+          <span class="app-badge good">Moka Pot</span>
+          <span class="app-badge avoid">Pour Over</span>
+        </div>
+      </div>
+
+      <!-- Kenya -->
+      <div class="region-card reveal d6" style="--region-color:#8b2e6b">
+        <div class="region-header">
+          <span class="region-dot"></span>
+          <span class="region-name">Kenya</span>
+        </div>
+        <div class="region-continent">East Africa &middot; Nyeri, Kirinyaga, Murang'a</div>
+        <div class="flavor-tags">
+          <span class="tag">Blackcurrant</span>
+          <span class="tag">Tomato</span>
+          <span class="tag">Grapefruit</span>
+          <span class="tag">Wine</span>
+        </div>
+        <div class="attr-row"><span class="attr-label">Body</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:55%"></div></div><span class="attr-val">3</span></div>
+        <div class="attr-row"><span class="attr-label">Acidity</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:95%"></div></div><span class="attr-val">5</span></div>
+        <div class="attr-row"><span class="attr-label">Sweetness</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:50%"></div></div><span class="attr-val">3</span></div>
+        <div class="attr-row"><span class="attr-label">Crema</span><div class="attr-bar-bg"><div class="attr-bar-fill" style="width:45%"></div></div><span class="attr-val">2</span></div>
+        <p class="roast-note">Use max 10–15% — highly assertive, dominates blends</p>
+        <div class="apps-row">
+          <div class="apps-label">Best for</div>
+          <span class="app-badge best">Pour Over</span>
+          <span class="app-badge best">Siphon</span>
+          <span class="app-badge good">Aeropress</span>
+          <span class="app-badge good">Filter Drip</span>
+          <span class="app-badge avoid">Espresso Solo</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BLENDING RATIOS -->
+  <section class="section-block">
+    <div class="section-label reveal"><span>Blending Ratios</span></div>
+    <div class="blend-grid">
+
+      <div class="blend-card reveal d1" style="--blend-accent:#8b5e3c">
+        <div class="blend-title">Brazil + Guatemala</div>
+        <div class="blend-purpose">Bold Chocolate &middot; Espresso Classic</div>
+        <div class="blend-ratio">
+          <div class="blend-ratio-segment" style="width:70%;background:#8b5e3c">70%</div>
+          <div class="blend-ratio-segment" style="width:30%;background:#5a7a4a">30%</div>
+        </div>
+        <div class="blend-legend">
+          <div class="blend-legend-item"><div class="blend-legend-dot" style="background:#8b5e3c"></div>Brazil</div>
+          <div class="blend-legend-item"><div class="blend-legend-dot" style="background:#5a7a4a"></div>Guatemala</div>
+        </div>
+        <p class="blend-result">Milk chocolate, brown sugar, dark fruit, medium-heavy body. Excellent in milk drinks. Adjust toward 50/50 for more boldness.</p>
+      </div>
+
+      <div class="blend-card reveal d2" style="--blend-accent:#8b5e3c">
+        <div class="blend-title">Brazil + Ethiopia</div>
+        <div class="blend-purpose">Specialty Classic &middot; Fruit &amp; Chocolate</div>
+        <div class="blend-ratio">
+          <div class="blend-ratio-segment" style="width:70%;background:#8b5e3c">70%</div>
+          <div class="blend-ratio-segment" style="width:30%;background:#8b2e2e">30%</div>
+        </div>
+        <div class="blend-legend">
+          <div class="blend-legend-item"><div class="blend-legend-dot" style="background:#8b5e3c"></div>Brazil</div>
+          <div class="blend-legend-item"><div class="blend-legend-dot" style="background:#8b2e2e"></div>Ethiopia</div>
+        </div>
+        <p class="blend-result">Chocolate base with berry and floral top notes. Bright, sweet, complex. The most popular specialty espresso blend style.</p>
+      </div>
+
+      <div class="blend-card reveal d3" style="--blend-accent:#2e4a6b">
+        <div class="blend-title">Brazil + Sumatra</div>
+        <div class="blend-purpose">Heavy Body &middot; Dark &amp; Earthy</div>
+        <div class="blend-ratio">
+          <div class="blend-ratio-segment" style="width:75%;background:#8b5e3c">75%</div>
+          <div class="blend-ratio-segment" style="width:25%;background:#2e4a6b">25%</div>
+        </div>
+        <div class="blend-legend">
+          <div class="blend-legend-item"><div class="blend-legend-dot" style="background:#8b5e3c"></div>Brazil</div>
+          <div class="blend-legend-item"><div class="blend-legend-dot" style="background:#2e4a6b"></div>Sumatra</div>
+        </div>
+        <p class="blend-result">Full-bodied, syrupy, low acidity. Earthy depth over chocolate sweetness. Powerful as espresso, cuts through heavy cream.</p>
+      </div>
+
+      <div class="blend-card reveal d4" style="--blend-accent:#c9973a">
+        <div class="blend-title">Brazil + Guatemala + Ethiopia</div>
+        <div class="blend-purpose">Signature Three-Origin &middot; Balanced Complex</div>
+        <div class="blend-ratio">
+          <div class="blend-ratio-segment" style="width:60%;background:#8b5e3c">60%</div>
+          <div class="blend-ratio-segment" style="width:25%;background:#5a7a4a">25%</div>
+          <div class="blend-ratio-segment" style="width:15%;background:#8b2e2e">15%</div>
+        </div>
+        <div class="blend-legend">
+          <div class="blend-legend-item"><div class="blend-legend-dot" style="background:#8b5e3c"></div>Brazil</div>
+          <div class="blend-legend-item"><div class="blend-legend-dot" style="background:#5a7a4a"></div>Guatemala</div>
+          <div class="blend-legend-item"><div class="blend-legend-dot" style="background:#8b2e2e"></div>Ethiopia</div>
+        </div>
+        <p class="blend-result">Layered profile: chocolate body, spiced dark fruit mid, floral-berry finish. Memorable on its own or in milk. A true signature blend structure.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FLAVOR MAP -->
+  <section class="section-block">
+    <div class="section-label reveal"><span>Flavor by Category</span></div>
+    <div class="flavor-map-grid">
+      <div class="flavor-col reveal d1">
+        <div class="flavor-col-header" style="color:#c8a97e">Chocolate &amp; Nut</div>
+        <div class="flavor-item">Milk Chocolate <span class="flavor-region">Brazil</span></div>
+        <div class="flavor-item">Dark Chocolate <span class="flavor-region">Guatemala</span></div>
+        <div class="flavor-item">Hazelnut <span class="flavor-region">Brazil</span></div>
+        <div class="flavor-item">Almond <span class="flavor-region">Brazil</span></div>
+        <div class="flavor-item">Cocoa <span class="flavor-region">Sumatra</span></div>
+      </div>
+      <div class="flavor-col reveal d2">
+        <div class="flavor-col-header" style="color:#c87e7e">Fruit &amp; Berry</div>
+        <div class="flavor-item">Blueberry <span class="flavor-region">Ethiopia Nat.</span></div>
+        <div class="flavor-item">Blackcurrant <span class="flavor-region">Kenya</span></div>
+        <div class="flavor-item">Stone Fruit <span class="flavor-region">Ethiopia</span></div>
+        <div class="flavor-item">Dark Fruit <span class="flavor-region">Guatemala</span></div>
+        <div class="flavor-item">Red Apple <span class="flavor-region">Colombia</span></div>
+      </div>
+      <div class="flavor-col reveal d3">
+        <div class="flavor-col-header" style="color:#c9a464">Floral &amp; Citrus</div>
+        <div class="flavor-item">Jasmine <span class="flavor-region">Ethiopia W.</span></div>
+        <div class="flavor-item">Bergamot <span class="flavor-region">Ethiopia</span></div>
+        <div class="flavor-item">Grapefruit <span class="flavor-region">Kenya</span></div>
+        <div class="flavor-item">Citrus <span class="flavor-region">Colombia</span></div>
+        <div class="flavor-item">Orange Zest <span class="flavor-region">Colombia</span></div>
+      </div>
+      <div class="flavor-col reveal d4">
+        <div class="flavor-col-header" style="color:#7eaad4">Savory &amp; Earthy</div>
+        <div class="flavor-item">Cedar / Wood <span class="flavor-region">Sumatra</span></div>
+        <div class="flavor-item">Herbs / Earth <span class="flavor-region">Sumatra</span></div>
+        <div class="flavor-item">Tobacco <span class="flavor-region">Sumatra</span></div>
+        <div class="flavor-item">Spice <span class="flavor-region">Guatemala</span></div>
+        <div class="flavor-item">Winey <span class="flavor-region">Kenya</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROASTER'S PRINCIPLES -->
+  <section class="section-block">
+    <div class="section-label reveal"><span>Roaster's Blending Principles</span></div>
+    <div class="principles-grid">
+      <div class="principle reveal d1">
+        <div class="principle-number">01</div>
+        <div class="principle-title">Roast Separately</div>
+        <p class="principle-body">Each origin has a different optimal development curve. Roast individually, then blend post-roast for best control and repeatability.</p>
+      </div>
+      <div class="principle reveal d2">
+        <div class="principle-number">02</div>
+        <div class="principle-title">2–3 Origins Max</div>
+        <p class="principle-body">More origins create noise, not complexity. Two or three well-chosen components outperform five mediocre ones every time.</p>
+      </div>
+      <div class="principle reveal d3">
+        <div class="principle-number">03</div>
+        <div class="principle-title">Balance the Triangle</div>
+        <p class="principle-body">Every blend needs body, acidity, and sweetness in tension. If one is missing, the cup feels flat. If one dominates, it fatigues the palate.</p>
+      </div>
+      <div class="principle reveal d4">
+        <div class="principle-number">04</div>
+        <div class="principle-title">Process Matters</div>
+        <p class="principle-body">Natural = sweet, fruity, heavy. Washed = clean, bright, clear. Honey = middle ground. Matching or contrasting processes dramatically shifts the profile.</p>
+      </div>
+      <div class="principle reveal d5">
+        <div class="principle-number">05</div>
+        <div class="principle-title">Start at 70/30</div>
+        <p class="principle-body">Begin with 70% base, 30% secondary. Taste. Adjust in 5–10% increments. Document every iteration with exact weights and brew parameters.</p>
+      </div>
+      <div class="principle reveal d6">
+        <div class="principle-number">06</div>
+        <div class="principle-title">Test in Milk</div>
+        <p class="principle-body">Espresso blends live in milk. A blend that's interesting as a straight shot but disappears in a latte has failed its primary purpose.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROAST STAGES -->
+  <section class="section-block">
+    <div class="section-label reveal"><span>Roast Stages &amp; Temperatures</span></div>
+    <div class="roast-timeline">
+
+      <div class="roast-stage reveal d1" style="--stage-color:#d4a853">
+        <div class="stage-temp">~390–410&deg;F</div>
+        <div class="stage-name">Cinnamon / Light</div>
+        <div class="stage-aka">Underdeveloped &middot; Pre-City</div>
+        <div class="stage-crack">1st crack begins ~395–405&deg;F</div>
+        <p class="stage-desc">Grassy, sharp, sourness from underdevelopment. Sweetness not yet formed. Not suitable for espresso. Rarely used intentionally by specialty roasters.</p>
+        <div class="stage-origins">
+          <span class="stage-origin-tag">Not recommended for espresso</span>
+        </div>
+      </div>
+
+      <div class="roast-stage reveal d2" style="--stage-color:#c4873a">
+        <div class="stage-temp">415–425&deg;F</div>
+        <div class="stage-name">City</div>
+        <div class="stage-aka">Light-Medium &middot; Earliest drinkable</div>
+        <div class="stage-crack">End of 1st crack / just after</div>
+        <p class="stage-desc">Bright acidity, origin character fully expressed, tea-like body. Risk of sourness or astringency if pulled too early. Best for clean, high-clarity single origins.</p>
+        <div class="stage-origins">
+          <span class="stage-origin-tag" style="background:rgba(139,46,46,0.2);color:#c87e7e">Ethiopia</span>
+          <span class="stage-origin-tag" style="background:rgba(139,46,107,0.2);color:#c87eb0">Kenya</span>
+          <span class="stage-origin-tag" style="background:rgba(201,151,58,0.2);color:#c9973a">Colombia</span>
+        </div>
+      </div>
+
+      <div class="roast-stage reveal d3" style="--stage-color:#a8662a">
+        <div class="stage-temp">425–435&deg;F</div>
+        <div class="stage-name">City+</div>
+        <div class="stage-aka">Medium &middot; Sweet spot</div>
+        <div class="stage-crack">10 sec – 1 min after end of 1st crack</div>
+        <p class="stage-desc">Balance of origin flavor and roast character. Caramel develops, acidity refined, sweetness peaks. Sweet Maria's ideal roast level. Excellent for specialty espresso.</p>
+        <div class="stage-origins">
+          <span class="stage-origin-tag" style="background:rgba(139,94,60,0.2);color:#c8a97e">Brazil</span>
+          <span class="stage-origin-tag" style="background:rgba(201,151,58,0.2);color:#c9973a">Colombia</span>
+          <span class="stage-origin-tag" style="background:rgba(139,46,46,0.2);color:#c87e7e">Ethiopia</span>
+          <span class="stage-origin-tag" style="background:rgba(90,122,74,0.25);color:#8ab07a">Guatemala</span>
+        </div>
+      </div>
+
+      <div class="roast-stage reveal d4" style="--stage-color:#8a4f20">
+        <div class="stage-temp">435–445&deg;F</div>
+        <div class="stage-name">Full City</div>
+        <div class="stage-aka">Medium-Dark &middot; Brink of 2nd crack</div>
+        <div class="stage-crack">At the onset of 2nd crack (~440–450&deg;F)</div>
+        <p class="stage-desc">Rich chocolate, caramel, dark fruit. Acidity fades, body increases. Origin character still present but roast flavors growing. Classic espresso territory.</p>
+        <div class="stage-origins">
+          <span class="stage-origin-tag" style="background:rgba(139,94,60,0.2);color:#c8a97e">Brazil</span>
+          <span class="stage-origin-tag" style="background:rgba(90,122,74,0.25);color:#8ab07a">Guatemala</span>
+          <span class="stage-origin-tag" style="background:rgba(46,74,107,0.3);color:#7eaad4">Sumatra</span>
+        </div>
+      </div>
+
+      <div class="roast-stage reveal d5" style="--stage-color:#6b3a15">
+        <div class="stage-temp">445&deg;F+</div>
+        <div class="stage-name">Full City+</div>
+        <div class="stage-aka">Medium-Dark &middot; First snaps of 2nd crack</div>
+        <div class="stage-crack">First few snaps of 2nd crack</div>
+        <p class="stage-desc">Oils begin surfacing. Dark chocolate, molasses, roasty sweetness. Origin character recedes. Northern Italian espresso style typically in this range (~440–446&deg;F).</p>
+        <div class="stage-origins">
+          <span class="stage-origin-tag" style="background:rgba(139,94,60,0.2);color:#c8a97e">Brazil</span>
+          <span class="stage-origin-tag" style="background:rgba(46,74,107,0.3);color:#7eaad4">Sumatra</span>
+          <span class="stage-origin-tag" style="background:rgba(90,122,74,0.25);color:#8ab07a">Guatemala</span>
+        </div>
+      </div>
+
+      <div class="roast-stage reveal d6" style="--stage-color:#4a2510">
+        <div class="stage-temp">~465&deg;F</div>
+        <div class="stage-name">Vienna</div>
+        <div class="stage-aka">Light French / Dark</div>
+        <div class="stage-crack">2nd crack well underway</div>
+        <p class="stage-desc">Heavy oils, bitter-sweet, smoky notes emerge. Roast flavor eclipses origin character. Sweet Maria's darkest recommended espresso stage — beyond this is not advised.</p>
+        <div class="stage-origins">
+          <span class="stage-origin-tag" style="background:rgba(46,74,107,0.3);color:#7eaad4">Sumatra</span>
+          <span class="stage-origin-tag">Others — use caution</span>
+        </div>
+      </div>
+
+      <div class="roast-stage reveal" style="--stage-color:#2e1508">
+        <div class="stage-temp">~460–470&deg;F+</div>
+        <div class="stage-name">French / Italian</div>
+        <div class="stage-aka">Very Dark &middot; Avoid</div>
+        <div class="stage-crack">Deep into / past 2nd crack</div>
+        <p class="stage-desc">Charred, ashy, bitter. Woody structure carbonizing. Oils heavily coat surface. All origin character lost. Burnt and dangerous above ~470–480&deg;F.</p>
+        <div class="stage-origins">
+          <span class="stage-origin-tag" style="background:rgba(139,46,46,0.12);color:#a06060">Origin character lost — not for specialty blends</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="espresso-zone reveal">
+      <div class="espresso-zone-label">Espresso Blend Sweet Zone</div>
+      <div class="espresso-zone-range">City+ &rarr; Full City+ &nbsp;&middot;&nbsp; 425–446&deg;F</div>
+      <p class="espresso-zone-desc">Per Sweet Maria's, City+ (425–435&deg;F) is the ideal balance of origin flavor and roast character. Full City (435–445&deg;F) and Full City+ (first snaps of 2nd crack) push into bolder espresso territory. Northern Italian-style espresso typically lands at 440–446&deg;F. Roast top-note origins like Ethiopia toward City/City+; push base origins like Brazil and Sumatra toward Full City/FC+. Note: temps vary 10–20&deg;F by roaster and probe placement — always use sight, smell, and sound alongside temperature.</p>
+    </div>
+  </section>
+
+  <!-- Page Footer -->
+  <footer class="page-footer reveal">
+    <p class="page-footer__copy">
+      Bloom Coffee Roasters &middot; Roaster's Field Reference &middot; Attribute scores on a 1–5 scale
+    </p>
+    <a href="/" class="page-footer__back">
+      <span class="page-footer__back-line"></span>
+      Back to Bloom Coffee
+    </a>
+  </footer>
+
+</div>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  revealEls.forEach(el => io.observe(el));
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    revealEls.forEach(el => el.classList.add('visible'));
+    document.querySelector('.marquee-track').style.animation = 'none';
+  }
+</script>
+</body>
+</html>
