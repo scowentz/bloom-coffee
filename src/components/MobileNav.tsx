@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 interface MobileNavProps {
   open: boolean;
@@ -22,6 +24,15 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
       aria-modal="true"
       aria-label="Navigation"
     >
+      <Link href="/" className="mobile-nav__logo" onClick={onClose}>
+        <Image
+          src="/LogoTrans2.png"
+          alt="Bloom Coffee Roasters"
+          width={72}
+          height={72}
+          style={{ height: 72, width: "auto", mixBlendMode: "screen" }}
+        />
+      </Link>
       <span
         className="mobile-nav__close"
         role="button"

@@ -93,7 +93,7 @@ li { list-style: none; }
 .announce-bar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 101;
   height: var(--announce-h);
-  background: var(--roast);
+  background: var(--dark-roast);
   border-bottom: 1px solid rgba(201,164,100,.15);
   display: flex; align-items: center; justify-content: center;
 }
@@ -122,7 +122,7 @@ li { list-style: none; }
 .nav__inner {
   width: 100%; display: flex; align-items: center; justify-content: space-between;
 }
-.nav__logo { display: block; line-height: 0; margin-left: 3rem; }
+.nav__logo { display: block; line-height: 0; }
 .nav__logo img { height: 62px; width: auto; mix-blend-mode: screen; }
 .nav__links {
   display: flex; align-items: center; gap: 2.5rem;
