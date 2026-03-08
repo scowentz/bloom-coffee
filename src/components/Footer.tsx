@@ -28,21 +28,21 @@ export default function Footer() {
           <div>
             <div className="footer__col-title">Shop</div>
             <ul className="footer__links">
-              <li>
+              {/* <li>
                 <a href="/#coffees">All Coffees</a>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <a href="/#coffees">Light Roasts</a>
-              </li>
+              </li> */}
               <li>
                 <a href="/#coffees">Medium Roasts</a>
               </li>
-              <li>
+              {/* <li>
                 <a href="/#coffees">Dark Roasts</a>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <a href="/#coffees">Subscriptions</a>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -61,6 +61,7 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Support — not yet applicable
           <div>
             <div className="footer__col-title">Support</div>
             <ul className="footer__links">
@@ -78,6 +79,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
+          */}
         </div>
 
         <div className="footer__bottom">
